@@ -45,26 +45,37 @@ const banana = new Fruit({
     review:"Sweet and tasty"
 });
 
-Fruit.insertMany([kiwi,orange,banana],function(err){
-    if(err){
-        console.log(err);
-    } else{
-        console.log("successfully saved fruits to fruitdb");
-    }
-});
+// Fruit.insertMany([kiwi,orange,banana],function(err){
+//     if(err){
+//         console.log(err);
+//     } else{
+//         console.log("successfully saved fruits to fruitdb");
+//     }
+// });
 //fruit.save();
 
-const personSchema = new mongoose.Schema({
-    name:String,
-    age:Number
-});
+Fruit.find(function(err,fruits){
+    if(err){
+        console.log(err);
+    } else {
+        //console.log(fruits);
+        mongoose.Collection.close();    
+        fruits.forEach(function(fruit){
+            console.log(fruit.name);
+        })
+    }
+})
+// const personSchema = new mongoose.Schema({
+//     name:String,
+//     age:Number
+// });
 
-const Person = mongoose.model("Person", personSchema);
+// const Person = mongoose.model("Person", personSchema);
 
-const person = new Person({
-    name:"Sunakshi",
-    age:24
-});
+// const person = new Person({
+//     name:"Sunakshi",
+//     age:24
+// });
 //person.save();
 
 
