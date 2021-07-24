@@ -55,6 +55,17 @@ const banana = new Fruit({
   review: "Sweet and tasty"
 });
 
+const apple = new Fruit({
+  name: "Apple",
+  rating: 9,
+  review: "Quite wholesome!"
+});
+
+const mango = new Fruit({
+  name: "Mango",
+  rating: 9,
+  review: "Really the best fruit!"
+});
 // Fruit.insertMany([kiwi,orange,banana],function(err){
 //     if(err){
 //         console.log(err);
@@ -63,6 +74,8 @@ const banana = new Fruit({
 //     }
 // });
 //fruit.save();
+//apple.save();
+//mango.save();
 
 Fruit.find(function(err, fruits) {
   if (err) {
@@ -75,15 +88,25 @@ Fruit.find(function(err, fruits) {
     });
   }
 });
-// const personSchema = new mongoose.Schema({
-//     name:String,
-//     age:Number
-// });
+const personSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  favouriteFruit: fruitSchema
+});
 
-// const Person = mongoose.model("Person", personSchema);
+const Person = mongoose.model("Person", personSchema);
 
 // const person = new Person({
-//     name:"Sunakshi",
-//     age:24
+//   name: "Sunakshi",
+//   age: 24,
+//   favouriteFruit: apple
 // });
+
+const Tomo = new Person({
+    name: "Tomo",
+    age: 2,
+    favouriteFruit: mango
+  });
 //person.save();
+Tomo.save();
+
