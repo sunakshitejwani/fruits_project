@@ -1,36 +1,70 @@
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 // or as an es module:
 // import { MongoClient } from 'mongodb'
 
 // Connection URL
-const url = "mongodb://localhost:27017";
-const client = new MongoClient(url);
+mongoose.connect('mongodb://localhost:27017/fruitsDB', {useNewUrlParser: true, useUnifiedTopology: true});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+  console.log("we're connected!");
+});
 
-// Database Name
-const dbName = "fruitsDB";
+// Schema Name
 
-async function main() {
-  // Use connect method to connect to the server
-  await client.connect();
-  console.log("Connected successfully to server");
-  const db = client.db(dbName);
-  const collection = db.collection("fruits");
+const fruitSchema = new mongoose.Schema({
+    name:String,
+    rating:Number,
+    review:String
+});
 
-  // the following code examples can be pasted here...
-  const insertResult = await collection.insertMany([
-    { name: "Apple", score: 8, review: "Great fruit!" },
-    { name: "Orange", score: 6, review: "Kinda sour" },
-    { name: "Banana", score: 9, review: "Great stuff!" }
-  ]);
-  console.log("Inserted documents =>", insertResult);
+const Fruit = mongoose.model("Fruit",fruitSchema);
 
-  const findResult = await collection.find({}).toArray();
-  console.log("Found documents =>", findResult);
+const fruit = new Fruit({
+    name:"Apple",
+    rating:7,
+    review:"Pretty solid as a fruit!"
+});
 
-  return "done.";
-}
+const kiwi = new Fruit({
+    name:"kiwi",
+    rating:5,
+    review:"Kinda sour"
+});
 
-main()
-  .then(console.log)
-  .catch(console.error)
-  .finally(() => client.close());
+const orange = new Fruit({
+    name:"Orange",
+    rating:8,
+    review:"Juicy and refreshing"
+});
+
+const banana = new Fruit({
+    name:"Banana",
+    rating:8,
+    review:"Sweet and tasty"
+});
+
+Fruit.insertMany([kiwi,orange,banana],function(err){
+    if(err){
+        console.log(err);
+    } else{
+        console.log("successfully saved fruits to fruitdb");
+    }
+});
+//fruit.save();
+
+const personSchema = new mongoose.Schema({
+    name:String,
+    age:Number
+});
+
+const Person = mongoose.model("Person", personSchema);
+
+const person = new Person({
+    name:"Sunakshi",
+    age:24
+});
+//person.save();
+
+
